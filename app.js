@@ -1,11 +1,9 @@
 var createError = require('http-errors');
 var express = require('express');
-const router = express.Router();
+var createError = require('http-errors');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-
-var indexRouter = require('./routes/index');
 var booksRouter = require('./routes/books');
 
 var app = express();
@@ -21,29 +19,32 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
-app.use('/books', booksRouter);
 
-// catch 404 and forward to error handler
+app.use('/', booksRouter);
+
+
+
+// 404 Error Catcher 
 app.use(function(req, res, next) {
   next(createError(404));
 });
 
-// error handler
+
+
+// Error handler: 404 and 500 errors
 app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
+
+  // Provide error in development
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
-  // render the error page
+  // Render the error page, based on error code
+  
   res.status(err.status || 500);
-
-  if (err.status === 400) {
+  if (err.status === 404) {
     res.render('page_not_found')
   } else {
     res.render('error');
   };
 });
 
-module.exports = router;
 module.exports = app;

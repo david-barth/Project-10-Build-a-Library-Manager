@@ -1,13 +1,29 @@
 'use strict';
+
 module.exports = (sequelize, DataTypes) => {
   const book = sequelize.define('book', {
-    title: DataTypes.STRING,
-    author: DataTypes.STRING,
+    title: {
+      type: DataTypes.STRING, 
+      allowNull: false,
+      validate: {
+        notEmpty: true, 
+      }
+    },
+    author: {
+      type: DataTypes.STRING, 
+      allowNull: false,
+      validate: {
+        notEmpty: true, 
+      }
+    },    
     genre: DataTypes.STRING,
-    date: DataTypes.INTEGER
-  }, {});
+    year: DataTypes.INTEGER 
+    }
+  , {});
   book.associate = function(models) {
     // associations can be defined here
   };
   return book;
 };
+
+
